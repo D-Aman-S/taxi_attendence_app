@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "897650118984",
+    "project_id": "growhut-c6d37",
+    "storage_bucket": "growhut-c6d37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897650118984:android:5e0864e584612ebe2e637d",
+        "android_client_info": {
+          "package_name": "com.example.taxi_attendence_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp0D5iwpBXC-8uejBqPtns_7hNNBOva-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

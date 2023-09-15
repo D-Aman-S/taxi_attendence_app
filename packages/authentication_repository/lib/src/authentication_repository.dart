@@ -148,6 +148,7 @@ class AuthenticationRepository {
         },
         verificationCompleted: (phoneAuthCredential) {
           _credential = phoneAuthCredential;
+          signIn();
         },
         verificationFailed: (e) {
           throw PhoneLoginFailure.fromCode(e.code);
@@ -161,10 +162,11 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> verifyOTP(String otp) async {
+  Future<void> verifyOTP({required String otp}) async {
     try {
       _credential = await firebase_auth.PhoneAuthProvider.credential(
           verificationId: _verificationId, smsCode: otp);
+      signIn();
     } catch (e) {
       throw PhoneLoginFailure.fromCode(e.toString());
     }

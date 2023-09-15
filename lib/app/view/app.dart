@@ -2,8 +2,12 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_attendence_app/app/bloc/app_bloc.dart';
+import 'package:taxi_attendence_app/components/loading/loading_widget.dart';
+import 'package:taxi_attendence_app/home/view/home.dart';
+import 'package:taxi_attendence_app/login/login.dart';
+import 'package:taxi_attendence_app/theme.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({
     required AuthenticationRepository authenticationRepository,
     super.key,
@@ -12,30 +16,57 @@ class App extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
-      value: _authenticationRepository,
-      child: BlocProvider(
-        create: (_) => AppBloc(
-          authenticationRepository: _authenticationRepository,
+      value: widget._authenticationRepository,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AppBloc(
+              authenticationRepository: widget._authenticationRepository,
+            ),
+          ),
+        ],
+        child: MaterialApp(
+          theme: theme,
+          home: const AppView(),
         ),
-        child: const AppView(),
       ),
     );
   }
 }
 
-class AppView extends StatelessWidget {
+class AppView extends StatefulWidget {
   const AppView({super.key});
 
   @override
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      home: FlowBuilder<AppStatus>(
-        state: context.select((AppBloc bloc) => bloc.state.status),
-        onGeneratePages: onGenerateAppViewPages,
-      ),
+    return BlocBuilder<AppBloc, AppState>(
+      builder: (context, state) {
+        switch (state.status) {
+          case AppStatus.authenticated:
+            return const HomePage();
+          case AppStatus.unauthenticated:
+            return BlocProvider(
+              create: (_) => LoginCubit(
+                context.read<AuthenticationRepository>(),
+              ),
+              child: const PhoneNumberPage(),
+            );
+          case AppStatus.loading:
+            return const Loading();
+        }
+      },
     );
   }
 }

@@ -71,7 +71,6 @@ class LoginWrapper extends StatelessWidget {
       child: Builder(builder: (context) {
         return BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
-            print(state);
             if (state is LoginCodeSentState) {
               return const OtpPage();
             } else if (state is LoginLoggedInState) {

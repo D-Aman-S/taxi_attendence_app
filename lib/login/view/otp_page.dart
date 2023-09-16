@@ -87,9 +87,6 @@ class _OtpPageState extends State<OtpPage> {
             }
           },
           builder: (context, state) {
-            if (state is LoginLoggedInState) {
-              return const Loading();
-            }
             return SingleChildScrollView(
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),

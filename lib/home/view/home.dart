@@ -43,6 +43,8 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const Spacer(),
                       PopupMenuItem<void>(
+                        onTap: () {},
+                        enabled: false,
                         height: 50,
                         child: Text(
                           'View Profile',
@@ -59,6 +61,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       PopupMenuItem<void>(
                         height: 50,
+                        enabled: false,
+                        onTap: () {},
                         child: Text(
                           'Change Photo',
                           style: GoogleFonts.inter(

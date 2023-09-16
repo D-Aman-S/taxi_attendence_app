@@ -33,6 +33,7 @@ class _OtpPageState extends State<PhoneNumberPage> {
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: (Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,

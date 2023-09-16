@@ -67,6 +67,7 @@ class _OtpPageState extends State<OtpPage> {
     // );
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginLoadingState) {

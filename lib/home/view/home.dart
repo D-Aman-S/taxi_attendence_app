@@ -306,10 +306,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  getHeight(double height) {
+  double getHeight(num height) {
     if (height < 825) {
-      return 70;
+      return 70.0;
     } else
-      return 120;
+      return 120.0;
   }
 }

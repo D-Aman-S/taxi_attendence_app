@@ -128,7 +128,7 @@ class _OtpPageState extends State<OtpPage> {
                         Row(
                           children: [
                             Text(
-                              "Sent to ${context.read<LoginCubit>().phoneNumber}",
+                              "Sent to ${context.read<LoginCubit>().phoneNumberval}",
                               style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 16,

@@ -33,6 +33,10 @@ class _AppState extends State<App> {
               authenticationRepository: widget._authenticationRepository,
             ),
           ),
+          BlocProvider(
+            lazy: false,
+            create: (_) => LoginCubit(widget._authenticationRepository),
+          ),
         ],
         child: Portal(
           child: MaterialApp(
@@ -62,12 +66,7 @@ class _AppViewState extends State<AppView> {
           case AppStatus.authenticated:
             return const HomePage();
           case AppStatus.unauthenticated:
-            return BlocProvider(
-              create: (_) => LoginCubit(
-                context.read<AuthenticationRepository>(),
-              ),
-              child: const PhoneNumberPage(),
-            );
+            return const PhoneNumberPage();
           case AppStatus.loading:
             return const Loading();
         }

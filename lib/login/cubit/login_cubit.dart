@@ -6,11 +6,12 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authenticationRepository) : super(LoginInitialState());
 
   final AuthenticationRepository _authenticationRepository;
-  String phoneNumber = "";
+  String phoneNumberval = "";
 
   Future<void> logInWithPhoneNumber(String phoneNumber) async {
     try {
       emit(LoginLoadingState());
+      phoneNumberval = phoneNumber;
       await _authenticationRepository.sendOtp(phoneNumber: phoneNumber);
       emit(LoginCodeSentState());
     } on Exception catch (e) {

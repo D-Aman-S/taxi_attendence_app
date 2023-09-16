@@ -69,7 +69,7 @@ class _CountDownTimerState extends State<CountDownTimer> {
   void _resendCode() async {
     LoadingScreen().show(context: context);
     final cubit = BlocProvider.of<LoginCubit>(context);
-    cubit.logInWithPhoneNumber(cubit.phoneNumber);
+    cubit.logInWithPhoneNumber(cubit.phoneNumberval);
     LoadingScreen().hide();
     if (mounted) {
       setState(() {

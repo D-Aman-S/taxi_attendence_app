@@ -148,7 +148,6 @@ class AuthenticationRepository {
         },
         verificationCompleted: (phoneAuthCredential) {
           _credential = phoneAuthCredential;
-          signIn();
         },
         verificationFailed: (e) {
           throw PhoneLoginFailure.fromCode(e.code);
@@ -166,7 +165,6 @@ class AuthenticationRepository {
     try {
       _credential = await firebase_auth.PhoneAuthProvider.credential(
           verificationId: _verificationId, smsCode: otp);
-      signIn();
     } catch (e) {
       throw PhoneLoginFailure.fromCode(e.toString());
     }

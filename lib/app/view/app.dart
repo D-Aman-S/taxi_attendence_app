@@ -69,12 +69,27 @@ class LoginWrapper extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(context.read<AuthenticationRepository>()),
       child: Builder(builder: (context) {
-        return BlocBuilder<LoginCubit, LoginState>(
+        return BlocConsumer<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state is LoginErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                ),
+              );
+            }
+          },
           builder: (context, state) {
             if (state is LoginCodeSentState) {
               return const OtpPage();
             } else if (state is LoginLoggedInState) {
               return const Loading();
+            } else if (state is LoginErrorState) {
+              if (state.errorType == ErrorType.phone) {
+                return const PhoneNumberPage();
+              } else {
+                return const OtpPage();
+              }
             } else {
               return PhoneNumberPage(
                 key: UniqueKey(),

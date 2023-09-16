@@ -1,18 +1,44 @@
-abstract class LoginState {}
+import 'package:equatable/equatable.dart';
 
-class LoginInitialState extends LoginState {}
+abstract class LoginState extends Equatable {}
 
-class LoginLoadingState extends LoginState {}
+class LoginInitialState extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
-class LoginCodeSentState extends LoginState {}
+class LoginLoadingState extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
-class LoginCodeVerifiedState extends LoginState {}
+class LoginCodeSentState extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
-class LoginLoggedInState extends LoginState {}
+class LoginCodeVerifiedState extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
-class LoginLoggedOutState extends LoginState {}
+class LoginLoggedInState extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
+
+class LoginLoggedOutState extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
 class LoginErrorState extends LoginState {
   final String error;
-  LoginErrorState(this.error);
+  final ErrorType errorType;
+  LoginErrorState(this.error, this.errorType);
+
+  @override
+  List<Object?> get props => [error, errorType];
 }
+
+enum ErrorType { phone, otp }

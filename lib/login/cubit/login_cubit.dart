@@ -9,23 +9,24 @@ class LoginCubit extends Cubit<LoginState> {
   String phoneNumberval = "";
 
   Future<void> logInWithPhoneNumber(String phoneNumber) async {
+    emit(LoginLoadingState());
     try {
-      emit(LoginLoadingState());
       phoneNumberval = phoneNumber;
       await _authenticationRepository.sendOtp(phoneNumber: phoneNumber);
       emit(LoginCodeSentState());
-    } on Exception catch (e) {
-      emit(LoginErrorState(e.toString()));
+    } on PhoneLoginFailure catch (e) {
+      emit(LoginErrorState(e.message, ErrorType.phone));
     }
   }
 
   Future<void> verifyOtp(String otp) async {
+    emit(LoginLoadingState());
     try {
-      emit(LoginLoadingState());
       await _authenticationRepository.verifyOTP(otp: otp);
+      await _authenticationRepository.signIn();
       emit(LoginLoggedInState());
-    } on Exception catch (e) {
-      emit(LoginErrorState(e.toString()));
+    } on PhoneLoginFailure catch (e) {
+      emit(LoginErrorState(e.message, ErrorType.otp));
     }
   }
 }

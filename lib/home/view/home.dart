@@ -79,14 +79,6 @@ class _HomePageState extends State<HomePage> {
                           });
                           BlocProvider.of<AppBloc>(context)
                               .add(const AppLogoutRequested());
-                          // LoadingScreen().show(context: context);
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => App(
-                          //               authenticationRepository: context
-                          //                   .read<AuthenticationRepository>(),
-                          //             )));
                         },
                         height: 50,
                         child: Text(

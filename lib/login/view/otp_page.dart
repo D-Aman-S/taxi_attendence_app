@@ -74,9 +74,6 @@ class _OtpPageState extends State<OtpPage> {
               LoadingScreen().show(context: context);
             } else if (state is LoginLoggedInState) {
               LoadingScreen().hide();
-              Navigator.popUntil(context, (route) => route.isFirst);
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
             } else if (state is LoginErrorState) {
               otpController.text = "";
               LoadingScreen().hide();

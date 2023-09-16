@@ -9,7 +9,6 @@ import 'package:taxi_attendence_app/components/loading/loading_screen.dart';
 import 'package:taxi_attendence_app/login/cubit/login_state.dart';
 import 'package:taxi_attendence_app/login/login.dart';
 import 'package:taxi_attendence_app/utilities/color_constants.dart';
-import 'package:taxi_attendence_app/utilities/validate.dart';
 
 class PhoneNumberPage extends StatefulWidget {
   const PhoneNumberPage({
@@ -28,9 +27,13 @@ class _OtpPageState extends State<PhoneNumberPage> {
   bool showError = false;
   String errorMessage = "";
   @override
+  void initState() {
+    print("reached");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: (Scaffold(
         resizeToAvoidBottomInset: false,
@@ -103,13 +106,6 @@ class _OtpPageState extends State<PhoneNumberPage> {
                 LoadingScreen().show(context: context);
               } else if (state is LoginCodeSentState) {
                 LoadingScreen().hide();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                              value: context.read<LoginCubit>(),
-                              child: const OtpPage(),
-                            )));
               } else if (state is LoginErrorState) {
                 LoadingScreen().hide();
                 print(state.error);

@@ -1,10 +1,13 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:taxi_attendence_app/app/bloc/app_bloc.dart';
+import 'package:taxi_attendence_app/app/routes/routes.dart';
 import 'package:taxi_attendence_app/components/loading/loading_widget.dart';
 import 'package:taxi_attendence_app/home/view/home.dart';
+import 'package:taxi_attendence_app/login/cubit/login_state.dart';
 import 'package:taxi_attendence_app/login/login.dart';
 import 'package:taxi_attendence_app/theme.dart';
 
@@ -25,26 +28,11 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: widget._authenticationRepository,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            lazy: false,
-            create: (_) => AppBloc(
-              authenticationRepository: widget._authenticationRepository,
-            ),
-          ),
-          BlocProvider(
-            lazy: false,
-            create: (_) => LoginCubit(widget._authenticationRepository),
-          ),
-        ],
-        child: Portal(
-          child: MaterialApp(
-            theme: theme,
-            debugShowCheckedModeBanner: false,
-            home: const AppView(),
-          ),
+      child: BlocProvider(
+        create: (_) => AppBloc(
+          authenticationRepository: widget._authenticationRepository,
         ),
+        child: const AppView(),
       ),
     );
   }
@@ -60,17 +48,42 @@ class AppView extends StatefulWidget {
 class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case AppStatus.authenticated:
-            return const HomePage();
-          case AppStatus.unauthenticated:
-            return const PhoneNumberPage();
-          case AppStatus.loading:
-            return const Loading();
-        }
-      },
+    return Portal(
+      child: MaterialApp(
+        theme: theme,
+        home: FlowBuilder<AppStatus>(
+          state: context.select((AppBloc bloc) => bloc.state.status),
+          onGeneratePages: onGenerateAppViewPages,
+        ),
+      ),
+    );
+  }
+}
+
+class LoginWrapper extends StatelessWidget {
+  const LoginWrapper({super.key});
+  static Page<void> page() => const MaterialPage<void>(child: LoginWrapper());
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoginCubit(context.read<AuthenticationRepository>()),
+      child: Builder(builder: (context) {
+        return BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) {
+            print(state);
+            if (state is LoginCodeSentState) {
+              return const OtpPage();
+            } else if (state is LoginLoggedInState) {
+              return const Loading();
+            } else {
+              return PhoneNumberPage(
+                key: UniqueKey(),
+              );
+            }
+          },
+        );
+      }),
     );
   }
 }

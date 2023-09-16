@@ -98,8 +98,7 @@ class CustomInput extends StatelessWidget {
                   fontSize: 16,
                   color: const Color(0xFFC4C4C4)),
 
-              contentPadding:
-                  const EdgeInsets.only(left: 16, top: 12.8, bottom: 13.7),
+              contentPadding: const EdgeInsets.only(left: 16, top: 15),
             ),
           ),
         ),

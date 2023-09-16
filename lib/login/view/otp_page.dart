@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 import 'package:pinput/pinput.dart';
 import 'package:taxi_attendence_app/components/custom_button.dart';
+import 'package:taxi_attendence_app/components/custom_spaces.dart';
 import 'package:taxi_attendence_app/components/loading/loading_screen.dart';
 import 'package:taxi_attendence_app/components/loading/loading_widget.dart';
 import 'package:taxi_attendence_app/home/view/home.dart';
 import 'package:taxi_attendence_app/login/cubit/login_cubit.dart';
 import 'package:taxi_attendence_app/login/view/countdown_timer.dart';
+import 'package:taxi_attendence_app/utilities/color_constants.dart';
 
 import '../cubit/login_state.dart';
 
@@ -31,156 +35,154 @@ class _OtpPageState extends State<OtpPage> {
   bool showLoading = false;
   String errorMessage = "";
   final defaultPinTheme = PinTheme(
-    width: 56,
-    height: 56,
-    textStyle: TextStyle(
-        fontSize: 20,
-        color: Color.fromRGBO(30, 60, 87, 1),
-        fontWeight: FontWeight.w600),
+    height: 62,
+    constraints: const BoxConstraints(minWidth: 53, maxWidth: 63),
+    padding: const EdgeInsets.only(left: 4, right: 4),
+    textStyle: GoogleFonts.roboto(
+        fontWeight: FontWeight.w400, fontSize: 16, color: fontColor),
     decoration: BoxDecoration(
-      border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
-      borderRadius: BorderRadius.circular(20),
+      border: GradientBoxBorder(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [themeGradientColor1, themeGradientColor2],
+        ),
+        width: 1,
+      ),
+      borderRadius: BorderRadius.circular(15),
     ),
   );
 
   @override
   Widget build(BuildContext context) {
-    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
-      borderRadius: BorderRadius.circular(8),
-    );
+    // final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+    //   border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
+    //   borderRadius: BorderRadius.circular(8),
+    // );
 
-    final submittedPinTheme = defaultPinTheme.copyWith(
-      decoration: defaultPinTheme.decoration?.copyWith(
-        color: Color.fromRGBO(234, 239, 243, 1),
-      ),
-    );
+    // final submittedPinTheme = defaultPinTheme.copyWith(
+    //   decoration: defaultPinTheme.decoration?.copyWith(
+    //     color: Color.fromRGBO(234, 239, 243, 1),
+    //   ),
+    // );
     return SafeArea(
       child: Scaffold(
-          body: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state is LoginLoadingState) {
-            LoadingScreen().show(context: context);
-          } else if (state is LoginLoggedInState) {
-            LoadingScreen().hide();
-            Navigator.popUntil(context, (route) => route.isFirst);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const HomePage()));
-          } else if (state is LoginErrorState) {
-            otpController.text = "";
-            LoadingScreen().hide();
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Invalid Otp"),
-              backgroundColor: Colors.red,
-              duration: Duration(milliseconds: 800),
-            ));
-          } else {
-            LoadingScreen().hide();
-          }
-        },
-        builder: (context, state) {
-          if (state is LoginLoggedInState) {
-            return const Loading();
-          }
-          return SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          width: 420,
-                          alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.fromLTRB(5, 25, 5, 25),
-                          padding: const EdgeInsets.all(10),
-                          child: Image.asset("assets/logo.png")),
-                      Container(
-                        width: 216.00,
-                        margin: const EdgeInsets.only(left: 46, right: 46),
-                        child: BlocBuilder<LoginCubit, LoginState>(
-                          builder: (context, state) {
-                            return RichText(
-                              text: TextSpan(
-                                children: [
-                                  const TextSpan(
-                                    text: 'Please enter OTP sent\nto ',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: BlocProvider.of<LoginCubit>(context)
-                                        .phoneNumber,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.center,
-                            );
-                          },
+        body: BlocConsumer<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state is LoginLoadingState) {
+              LoadingScreen().show(context: context);
+            } else if (state is LoginLoggedInState) {
+              LoadingScreen().hide();
+              Navigator.popUntil(context, (route) => route.isFirst);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+            } else if (state is LoginErrorState) {
+              otpController.text = "";
+              LoadingScreen().hide();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Invalid Otp"),
+                backgroundColor: Colors.red,
+                duration: Duration(milliseconds: 800),
+              ));
+            } else {
+              LoadingScreen().hide();
+            }
+          },
+          builder: (context, state) {
+            if (state is LoginLoggedInState) {
+              return const Loading();
+            }
+            return SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        const HeightSpace(27),
+                        SizedBox(
+                          height: 31,
+                          width: 72,
+                          child: Image.asset("assets/logo.png"),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 46, top: 60, right: 45),
-                        child: Semantics(
+                        const HeightSpace(10),
+                        SizedBox(
+                          height: 295,
+                          width: 340,
+                          child: Image.asset("assets/otp_screen_image.png"),
+                        ),
+                        const HeightSpace(31),
+                        Row(
+                          children: [
+                            Text(
+                              "Enter OTP",
+                              style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                  color: fontColor),
+                            ),
+                            const Spacer()
+                          ],
+                        ),
+                        const HeightSpace(10),
+                        Row(
+                          children: [
+                            Text(
+                              "Sent to ${context.read<LoginCubit>().phoneNumber}",
+                              style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: fontColor),
+                            ),
+                            const Spacer(),
+                            const CountDownTimer(),
+                          ],
+                        ),
+                        HeightSpace(10),
+                        Semantics(
                           label: "OTP",
-                          child: Container(
-                              width: 360,
-                              height: 80,
-                              padding: const EdgeInsets.all(5),
-                              child: Pinput(
-                                defaultPinTheme: defaultPinTheme,
-                                focusedPinTheme: focusedPinTheme,
-                                controller: otpController,
-                                length: 6,
-                                submittedPinTheme: submittedPinTheme,
-                                pinputAutovalidateMode:
-                                    PinputAutovalidateMode.onSubmit,
-                                showCursor: true,
-                                onCompleted: (pin) => print(pin),
-                              )),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 420,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding:
-                                EdgeInsets.only(left: 46, top: 23, right: 45),
-                            child: CountDownTimer(),
+                          child: Pinput(
+                            defaultPinTheme: defaultPinTheme,
+                            // focusedPinTheme: focusedPinTheme,
+                            controller: otpController,
+                            length: 6,
+                            // submittedPinTheme: submittedPinTheme,
+                            pinputAutovalidateMode:
+                                PinputAutovalidateMode.onSubmit,
+                            showCursor: true,
+                            onCompleted: (pin) => print(pin),
                           ),
                         ),
-                      ),
-                      Semantics(
-                        label: "Submit",
-                        child: SizedBox(
-                            width: 420,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: CustomButton(
-                                  onPressed: () {
-                                    BlocProvider.of<LoginCubit>(context)
-                                        .verifyOtp(otpController.text);
-                                  },
-                                  displayText: "Verify OTP"),
-                            )),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  )),
+            );
+          },
+        ),
+        bottomSheet: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Semantics(
+            label: "Submit",
+            child: SizedBox(
+                height: 120,
+                child: Column(
+                  children: [
+                    CustomButton(
+                      onPressed: () {
+                        BlocProvider.of<LoginCubit>(context)
+                            .verifyOtp(otpController.text);
+                      },
+                      displayText: "Verify OTP",
+                      textSize: 20,
+                      height: 60,
+                      borderRadius: 15,
+                      color1: fontColor,
+                      color2: fontColor,
+                    ),
+                  ],
                 )),
-          );
-        },
-      )),
+          ),
+        ),
+      ),
     );
   }
 }

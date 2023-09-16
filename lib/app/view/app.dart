@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:taxi_attendence_app/app/bloc/app_bloc.dart';
 import 'package:taxi_attendence_app/components/loading/loading_widget.dart';
 import 'package:taxi_attendence_app/home/view/home.dart';
@@ -27,14 +28,18 @@ class _AppState extends State<App> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
+            lazy: false,
             create: (_) => AppBloc(
               authenticationRepository: widget._authenticationRepository,
             ),
           ),
         ],
-        child: MaterialApp(
-          theme: theme,
-          home: const AppView(),
+        child: Portal(
+          child: MaterialApp(
+            theme: theme,
+            debugShowCheckedModeBanner: false,
+            home: const AppView(),
+          ),
         ),
       ),
     );

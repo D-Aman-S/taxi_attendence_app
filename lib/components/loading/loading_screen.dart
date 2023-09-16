@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_attendence_app/components/loading/loading_screen_controller.dart';
 
 class LoadingScreen {
@@ -61,21 +62,27 @@ class LoadingScreen {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const SizedBox(height: 10),
-                            const CircularProgressIndicator(),
-                            const SizedBox(height: 20),
-                            StreamBuilder(
-                              stream: _text.stream,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data as String,
-                                    textAlign: TextAlign.center,
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
+                            const CircularProgressIndicator(
+                              color: Colors.white,
                             ),
+                            const SizedBox(height: 20),
+                            // StreamBuilder(
+                            //   stream: _text.stream,
+                            //   builder: (context, snapshot) {
+                            //     if (snapshot.hasData) {
+                            //       return Text(
+                            //         snapshot.data as String,
+                            //         textAlign: TextAlign.center,
+                            //         style: GoogleFonts.roboto(
+                            //             fontWeight: FontWeight.w500,
+                            //             fontSize: 16,
+                            //             color: Colors.white),
+                            //       );
+                            //     } else {
+                            //       return Container();
+                            //     }
+                            //   },
+                            // ),
                           ],
                         ),
                       ),

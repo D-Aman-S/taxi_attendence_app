@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_attendence_app/components/loading/loading_screen.dart';
 import 'package:taxi_attendence_app/login/cubit/login_cubit.dart';
 
@@ -40,30 +41,26 @@ class _CountDownTimerState extends State<CountDownTimer> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Text(
-          "00:$secondsRemaining",
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.left,
-          style: const TextStyle(
-            color: Color.fromARGB(255, 89, 89, 89),
-            fontSize: 14,
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.w500,
-          ),
-        ),
         TextButton(
           onPressed: enableResend ? _resendCode : null,
-          child: const Text(
-            "Resend OTP",
+          child: Text(
+            "Resend in",
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 14,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w700,
-            ),
+            style: GoogleFonts.roboto(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: const Color(0xff8399A3)),
           ),
+        ),
+        Text(
+          "${secondsRemaining}s",
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.left,
+          style: GoogleFonts.roboto(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              color: const Color(0xff8399A3)),
         ),
       ],
     );
